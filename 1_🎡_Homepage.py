@@ -43,7 +43,7 @@ st.write("""
 
 def ReadingData():
     df = pd.read_csv("Ofertas_finales.csv",sep="|")
-    
+    df.drop(['Unnamed: 0'],axis=1, inplace=True)
     return df
 ofertas = ReadingData()
 st.session_state['ofertas'] = ofertas
