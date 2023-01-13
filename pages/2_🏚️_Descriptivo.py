@@ -77,6 +77,7 @@ def filedownload(df,city):
     return href
 
 def Map(df,city,cantidad_puntos):
+    
     center_lat = df.query(f"ciudad == '{city}'").Latitud.values[0]
     center_lon = df.query(f"ciudad == '{city}'").Longitud.values[0]
     
@@ -131,33 +132,39 @@ df_filterin['Indice'] = df_filterin.index
 
 if boton:
     col1,col2 = st.columns(2)
-    
-    with col1:
-        if not df_filterin.shape[0]==1:
-            st.header("Diagrama distribución Canon")
-            box =DiagramaCaja(df_filterin )
-            st.plotly_chart(box, theme="streamlit", use_container_width=True)
-        else:
-            st.header("Diagrama distribución Canon")
-            st.write("No es posible graficar debido que solo hay 1 oferta")
+    if df_filterin.shape[0]==0:
+        st.write("Por favor cambie el filtro sobre el canon puede que no este en los rangos")
+    else:
         
-    with col2:
-        if not df_filterin.shape[0]==1:
-            st.header("Diagrama de Dispersión por estrato")
-            scatter = Scatterplot(df_filterin )
-            st.plotly_chart(scatter, theme="streamlit", use_container_width=True)
-        else:
-            st.header("Diagrama de Dispersión por estrato")
-            st.write("No es posible graficar debido que solo hay 1 oferta")
+        with col1:
+            if not df_filterin.shape[0]==1:
+                st.header("Estadísticas Descriptivas")
+                #box =DiagramaCaja(df_filterin )
+                #st.plotly_chart(box, theme="streamlit", use_container_width=True)
+                st.write(df_filterin.describe().drop(['Longitud','Latitud',
+                                                          'Administración',
+                                                          'Indice'],axis=1))
+            else:
+                st.header("Diagrama distribución Canon")
+                st.write("No es posible graficar debido que solo hay 1 oferta")
             
-    st.header("Mapa Distribución Ofertas")
-    st.write("No se despliegan todos los puntos porque satura el mapa")
-    st_data = folium_static(Map(df_filterin,ciudades,slider_puntos), width=1100)
-    
-    st.header("Datos Filtratos")
-    st.write(df_filterin )
-    st.markdown(filedownload(df_filterin ,
-                             ciudades), unsafe_allow_html=True)
+        with col2:
+            if not df_filterin.shape[0]==1:
+                st.header("Diagrama de Dispersión por estrato")
+                scatter = Scatterplot(df_filterin )
+                st.plotly_chart(scatter, theme="streamlit", use_container_width=True)
+            else:
+                st.header("Diagrama de Dispersión por estrato")
+                st.write("No es posible graficar debido que solo hay 1 oferta")
+                
+        st.header("Mapa Distribución Ofertas")
+        st.write("No se despliegan todos los puntos porque satura el mapa")
+        st_data = folium_static(Map(df_filterin,ciudades,slider_puntos), width=1100)
+        
+        st.header("Datos Filtratos")
+        st.write(df_filterin )
+        st.markdown(filedownload(df_filterin ,
+                                 ciudades), unsafe_allow_html=True)
     
 else:
     st.write("")
