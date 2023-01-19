@@ -41,9 +41,16 @@ tipo = st.selectbox("Tipo de Inmueble", df['Tipo'].unique())
 boton = st.sidebar.button("Ejecutar")
 
 def Histograma(df_ingreso,est,typee):
-    return px.histogram(df_ingreso.query(f"ID_Estrato=='{est}' and Tipo=='{typee}'"),
-                        
-                        nbins=50, template='plotly_white')
+    df_ingreso = df_ingreso.query(f"ID_Estrato=='{est}' and Tipo=='{typee}'")
+    mean = np.mean(df_ingreso['Canon'])
+    std = np.std(df_ingreso['Canon'])
+
+    fig= px.histogram(df_ingreso.loc[(df_ingreso ['Canon']>mean-1*std)\
+                                     &(df_ingreso ['Canon']<mean+1*std)],
+                        x='Canon',
+                        nbins=100, template='plotly_white', title='Histograma Precio Canon')
+    fig.update_xaxes(title='Canon')#title_font_family="Arial")
+    return fig
 
 def Modelo(tipo,estrato,area_cons,area_pri,antigue,piso,habitaciones,banio,parquedero,admin):
     mod = joblib.load(f"Modelo_{tipo}.pkl")
