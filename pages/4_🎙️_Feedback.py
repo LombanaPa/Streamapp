@@ -10,13 +10,16 @@ import pandas as pd
 import numpy as np
 import os
 
+from streamlit_extras.let_it_rain import rain
+  
+
+
 st.title("Comentarios")
 x = st.slider('Por favor escoge el ranking que le das a la app',1,5,value=3,step=1)
 st.sidebar.markdown('''Esta pagina es para que por favor califiques tu experiencia con la app,
                  sabemos que no es la mejor y por ende, trataré de desarrollar algo mejor para que cumpla tus expectivas,
                  pero te pido que por favor nos califiques y dejes tu comentario!! Así sabré que es necesario
                  para mejorar y ayudarte en tu labor.''')
-
 
 if x==1:
 	#st.markdown(":star: Lamento no llenar tus expectativas, prometo mejorar, ¿Podrías indicarnos que no te gustó?")
@@ -44,6 +47,15 @@ if boton:
     guardar_comentarios.loc[0,'Calificacion'] = repuesta
     guardar_comentarios.loc[0,'Comentario'] = texto
     guardar_comentarios.to_csv(f"D:\PABLO\Streamapp/comentarios/respuesta{aleatorio}_{aleatorio}.csv",sep=";", index=False)
+    rain(
+        emoji="👍",
+        font_size=54,
+        falling_speed=5,
+        animation_length="infinite",
+    )
+
+    
+    
     
     
 
