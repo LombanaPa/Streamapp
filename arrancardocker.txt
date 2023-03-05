@@ -1,0 +1,2 @@
+sudo service --status-all
+sudo service docker start
