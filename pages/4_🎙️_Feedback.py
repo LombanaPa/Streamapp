@@ -47,7 +47,7 @@ if boton:
     aleatorio = np.random.randint(0,10000000)
     guardar_comentarios.loc[0,'Calificacion'] = repuesta
     guardar_comentarios.loc[0,'Comentario'] = texto
-    guardar_comentarios.to_csv(f"D:\PABLO\Streamapp/comentarios/respuesta{aleatorio}_{aleatorio}.csv",sep=";", index=False)
+    guardar_comentarios.to_csv(f"/home/ec2-user/Streamapp/comentarios/respuesta{aleatorio}_{aleatorio}.csv",sep=";", index=False)
     rain(
         emoji="👍",
         font_size=54,
